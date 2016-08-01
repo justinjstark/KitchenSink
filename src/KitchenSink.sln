@@ -4,7 +4,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitchenSink.Web", "KitchenSink.Web\KitchenSink.Web.csproj", "{C8EEAA30-2733-48FD-AB9E-5D4BF4191440}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitchenSink.Web.Tests", "KitchenSink.Tests\KitchenSink.Web.Tests.csproj", "{F3CA598C-B684-4E54-9C69-88417D3C6B9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitchenSink.Web.Tests", "KitchenSink.Web.Tests\KitchenSink.Web.Tests.csproj", "{F3CA598C-B684-4E54-9C69-88417D3C6B9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
