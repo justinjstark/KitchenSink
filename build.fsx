@@ -1,12 +1,10 @@
 // include Fake lib
 #r @"build/packages/FAKE/tools/FakeLib.dll"
-#r @"build/packages/Newtonsoft.Json/lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll"
 
 open Fake
 open Fake.Testing.NUnit3
 open Fake.NuGet.Install
 open Fake.AssemblyInfoFile
-open Newtonsoft.Json
 
 //RestorePackages()
 
@@ -29,48 +27,9 @@ let release =
 let releaseNotesVersion = release.AssemblyVersion
 log ("ReleaseNotesVersion: " + releaseNotesVersion)
 
-//let version2 = GitVersionHelper.GitVersion (fun p ->
-//    { p with ToolPath = findToolInSubPath "GitVersion.exe" (packagesDir @@ "GitVersion.CommandLine") } //packagesDir @@ "/GitVersion.CommandLine/tools/GitVersion.exe"}
-//)
-//log ("GitVersion: " + version2)
-
-//Workaround https://github.com/fsharp/FAKE/pull/1365
-type GitVersionProperties = {
-    Major : int;
-    Minor : int;
-    Patch : int;
-    PreReleaseTag : string;
-    PreReleaseTagWithDash : string;
-    PreReleaseLabel : string;
-    PreReleaseNumber : System.Nullable<int>;
-    BuildMetaData : string;
-    BuildMetaDataPadded : string;
-    FullBuildMetaData : string;
-    MajorMinorPatch : string;
-    SemVer : string;
-    LegacySemVer : string;
-    LegacySemVerPadded : string;
-    AssemblySemVer : string;
-    FullSemVer : string;
-    InformationalVersion : string;
-    BranchName : string;
-    Sha : string;
-    NuGetVersionV2 : string;
-    NuGetVersion : string;
-    CommitsSinceVersionSource : int;
-    CommitsSinceVersionSourcePadded : string;
-    CommitDate : string;
-}
-
-let myGitVersionHelper = 
-    let timespan =  System.TimeSpan.FromMinutes 1.
-    let gitVersionToolPath = gitVersionExe
-    let result = ExecProcessAndReturnMessages (fun info ->
-        info.FileName <- gitVersionToolPath) timespan
-    if result.ExitCode <> 0 then failwithf "GitVersion.exe failed with exit code %i" result.ExitCode
-    result.Messages |> String.concat "" |> fun j -> JsonConvert.DeserializeObject<GitVersionProperties>(j)
-
-let gitVersion = myGitVersionHelper
+let gitVersion = GitVersionHelper.GitVersion (fun p ->
+    { p with ToolPath = findToolInSubPath "GitVersion.exe" (packagesDir @@ "GitVersion.CommandLine") } //packagesDir @@ "/GitVersion.CommandLine/tools/GitVersion.exe"}
+)
 log ("GitVersion: " + gitVersion.FullSemVer)
 
 // Targets
