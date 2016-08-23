@@ -71,7 +71,7 @@ let myGitVersionHelper =
     result.Messages |> String.concat "" |> fun j -> JsonConvert.DeserializeObject<GitVersionProperties>(j)
 
 let gitVersion = myGitVersionHelper
-log ("GitVersion: " + gitVersion.SemVer)
+log ("GitVersion: " + gitVersion.FullSemVer)
 
 // Targets
 Target "Clean" (fun _ ->
@@ -118,21 +118,21 @@ Target "FxCop" (fun _ ->
 )
 
 Target "Release" (fun _ ->
-    if gitVersion.BuildMetaData = "1" then log "~~~ !!! RELEASE TIME !!! ~~~"
+    if gitVersion.BuildMetaData = "" then log "~~~ !!! RELEASE TIME !!! ~~~"
     //Set an env variable to let build server know to deploy !??
 )
 
 // Dependencies
 "Clean"
   ==> "SetVersions"
-  ==> "CompileApp"
+  //==> "CompileApp"
   //==> "FxCop"
-  ==> "CompileTests"
-  ==> "RunTests"
+  //==> "CompileTests"
+  //==> "RunTests"
   ==> "Release"
 
 // start build
-RunTargetOrDefault "SetVersions"
+RunTargetOrDefault "Release"
 
 //match buildServer with
 //    | AppVeyor -> "test"
