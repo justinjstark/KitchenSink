@@ -48,23 +48,24 @@ Target "SetVersions" (fun _ ->
 )
 
 Target "CompileApp" (fun _ ->
-    !! @"src/**/*.csproj"
-      |> MSBuildRelease outputDir "Build"
-      |> Log "AppBuild-Output: "
+    !! @"src/KitchenSink/project.json"
+      |> DotNetCli.Build (fun p ->
+          {p with
+            Configuration = "Release"})
 )
 
 Target "CompileTests" (fun _ ->
-    !! @"src/**/*.Tests.csproj"
-      |> MSBuildDebug testDir "Build"
-      |> Log "TestBuild-Output: "
+    !! @"src/KitchenSink.Tests/project.json"
+      |> DotNetCli.Build (fun p ->
+          {p with
+            Configuration = "Release"})
 )
 
 Target "RunTests" (fun _ ->
-    !! (testDir @@ @"/**/**.Tests.dll")
-      |> NUnit (fun p ->
-                 {p with
-                   DisableShadowCopy = true;
-                   OutputFile = testDir + @"TestResults.xml"})
+    !! @"src/KitchenSink.Tests/project.json"
+      |> DotNetCli.Test (fun p ->
+        { p with
+            Configuration = "Release"})
 )
 
 Target "FxCop" (fun _ ->
@@ -84,10 +85,10 @@ Target "Release" (fun _ ->
 // Dependencies
 "Clean"
   ==> "SetVersions"
-  //==> "CompileApp"
+  ==> "CompileApp"
   //==> "FxCop"
-  //==> "CompileTests"
-  //==> "RunTests"
+  ==> "CompileTests"
+  ==> "RunTests"
   ==> "Release"
 
 // start build
