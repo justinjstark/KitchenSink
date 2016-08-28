@@ -57,11 +57,17 @@ Target "SetVersions" (fun _ ->
          Attribute.FileVersion gitVersion.AssemblySemVer]
 )
 
+Target "RestorePackages" (fun _ ->
+  DotNetCli.Restore (fun p ->
+    {p with
+      NoCache = true})
+)
+
 Target "CompileApp" (fun _ ->
     !! @"src/KitchenSink/project.json"
       |> DotNetCli.Build (fun p ->
-          {p with
-            Configuration = "Release"})
+        {p with
+          Configuration = "Release"})
 )
 
 Target "CompileTests" (fun _ ->
@@ -95,6 +101,7 @@ Target "FxCop" (fun _ ->
 // Dependencies
 "Clean"
   ==> "SetVersions"
+  ==> "RestorePackages"
   ==> "CompileApp"
   //==> "FxCop"
   ==> "CompileTests"
