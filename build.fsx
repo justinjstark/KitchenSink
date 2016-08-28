@@ -3,7 +3,6 @@
 
 open Fake
 open Fake.NuGet.Install
-open Fake.AssemblyInfoFile
 
 //RestorePackages()
 
@@ -48,13 +47,7 @@ Target "SetVersions" (fun _ ->
         traceException(e)
         raise(e)
 
-    CreateCSharpAssemblyInfo "./src/KitchenSink.Web/Properties/AssemblyInfo.cs"
-        [Attribute.Version gitVersion.AssemblySemVer
-         Attribute.FileVersion gitVersion.AssemblySemVer]
-
-    CreateCSharpAssemblyInfo "./src/KitchenSink.Web.Tests/Properties/AssemblyInfo.cs"
-        [Attribute.Version gitVersion.AssemblySemVer
-         Attribute.FileVersion gitVersion.AssemblySemVer]
+    DotNetCli.SetVersionInProjectJson gitVersion.SemVer @"src/KitchenSink/project.json"
 )
 
 Target "RestorePackages" (fun _ ->

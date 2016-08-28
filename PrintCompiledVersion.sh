@@ -1,0 +1,1 @@
+monodis --assembly ./src/KitchenSink/bin/Debug/netcoreapp1.0/KitchenSink.dll
