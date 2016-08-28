@@ -32,6 +32,11 @@ let gitVersion = GitVersionHelper.GitVersion (fun p ->
 )
 log ("GitVersion: " + gitVersion.FullSemVer)
 
+if gitVersion.SemVer <> releaseNotesVersion then
+    let e = FAKEException("GitVersion and ReleaseNotes versions do not match")
+    traceException(e)
+    raise(e)
+
 // Targets
 Target "Clean" (fun _ ->
     CleanDirs [outputDir; testDir; deployDir]
